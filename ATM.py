@@ -259,13 +259,6 @@ def withdraw(*args):
             bal-=amt
             print("Successfully withdrawn :-)\nYour current balance is ${0}".format(bal))
             retBal(balDict, bal)
-            '''
-            b.seek(0)
-            b.truncate()
-            print(bal)
-            b.write(str(bal))
-            '''
-            
             again()
     
     
@@ -285,12 +278,6 @@ def deposit(*args):
             bal+=dep
             print("Successfully deposited :-)\nYour current balance is ${0}".format(bal))
             retBal(balDict, bal)
-            '''
-            b.seek(0)
-            b.truncate()
-            print(bal)
-            b.write(str(bal))
-            '''
             again()
 
 
