@@ -12,17 +12,11 @@ accept= ['y','yes','Yes','Y','YES']
 reject= ['n','no','No','N','No']
 dbpin='1234'
 chances=3
-#######################################
 
-
-###########
 #reading from file
 filBal=open('dbal2.txt')
-db=open('clientDB.txt')
-fLis=[]
-account=input('Enter your account number:\n')
 
-#intialising a list
+fLis=[]
 balList=[]
 
 for line in filBal:
@@ -38,61 +32,51 @@ d=b.split('_')
 balDict=dict(zip(c,d))
 
 ###################
-#getting balance from dbBal
-def getBal(*args):
-    global bal
-    for i in balDict:
-        if account==i:
-            bal=balDict[i]
-    return bal
+
+es=time.localtime()
+timestr1 = time.strftime("%A\t%d %B %Y",es)
+timestr2 = time.strftime("%H:%M:%S",es)
+print("\nToday's Date:\t\t{0}".format(timestr1))
+#######################################
+
+def Welcome():
+    print(f'\n[{div}]\n\tWelcome to Mancol Financial House(MFH) Pvt Ltd\n\t\tLog in time:{timestr2}\n[{div}]')
+    iniT=input("\nSelect:\n\tOption [1] is you are a client:\n\tOption [2] if you are an admin:\n")
+    if iniT=='1':
+        print("Entering client Interface:")
+        time.sleep(1)
+        client()
+    elif iniT=="2":
+        print("Entering Adminstration Interface:")
+        time.sleep(1.5)
+        admin()
+        
+        
+
+############
+def admin():
+    global username, password
+    username=input('Enter your username:\n')
+    password=input('Enter your password:\n')
+    if password=='password' and username=="username":
+        greetAdmn()
+        
+    return username, password
+    
+def client(*args):
+    global account
+    account=input('Enter your account number:\n')
+    #account='2021-0001-100-10'
+    item_ret(fDict, account)
+    greetClient(title, surName)
+    #print(account)
+    return account
     
     
-getBal(balDict)        
-#print(bal)
+#######################################
 
-#returning balance
-def retBal(*args):
-    cont1=[]
-    cont2=[]
-    balax = bal
-    try:
-        
-        for i in balDict:
-            if account==i:
-                #print(i)
-                balDict[account]=str(balax)
-                
-    except RuntimeError:
-                    
-        print('Working')
-        #print(balDict)
-        
-    #print(balDict)
-    for i in balDict.items():
-        f=list(i)
-        #print(f)
-        a=f[0]
-        b=f[1]
-        #print(a)
-        #print(b)
-        cont1.append(a)
-        cont2.append(b)
-        #print(cont1)
-        #print(cont2)
-        w='_'.join(cont1)
-        x='_'.join(cont2)
-        #print(w)
-        #print(x)
-        
-        with open('dbal2.txt', 'w+') as file:
-            file.write(f"{w}\n{x}")
-            
-        
-
-
-###################
-###################
-
+#zto process data in the clientDB atfer generating fDict
+db=open('clientDB.txt')
 
 for line in db:
     lin=line.strip()
@@ -124,10 +108,8 @@ for i in nbl:
 
 fDict=dict(zip(LA,listOfD))
 
-#print(fDict)
-#to process data in the clientDB atfer generating fDict
 def item_ret(*args):
-    global firstName, surName, regNumberID, emailAddress, cellNumber, occupation, natIDNum, DateOfBirth, accountType, RegDate, sex, title
+    global firstName, surName, regNumberID, emailAddress, cellNumber, occupation, natIDNum, DateOfBirth, accountType, RegDate, sex, title, account
     for key in fDict:
         #print(key)
         if account not in fDict:
@@ -165,53 +147,27 @@ def item_ret(*args):
                 
     try:
         
-        return firstName, surName, regNumberID, emailAddress, cellNumber, occupation, natIDNum, DateOfBirth, accountType, RegDate, sex, title
+        return firstName, surName, regNumberID, emailAddress, cellNumber, occupation, natIDNum, DateOfBirth, accountType, RegDate, sex, title, account
     except:
         print("account not found")
     
+  
 
-    
-item_ret(fDict, account)
-try:
-    print(f"\aACCOUNT TYPE:  >_\t{accountType}")
-except NameError:
-    print('balanc could no be retrieved')
-    
-    
-print(f"ACCOUNT HOLDER:>_\t{title} {firstName} {surName}\nACCOUNT NUMBER:>_\t{account} ")
-T=[firstName, surName, regNumberID, emailAddress, cellNumber, occupation, natIDNum, DateOfBirth, accountType, RegDate, sex, title]
-#print(T)
-
-#######################################
-         
-
-bal=float(bal)
-
-
-def greet():
+def greetClient(*args):
+    #global chances
     ltrs=[]
     for i in firstName:
         ltrs.append(i)
         fc=ltrs[0]
-    print(f'\n[{div}]\n\tGreetings \t{title} {fc} {surName} \n\tWelcome to Mancol Financial House(MFH) Pvt Ltd\n[{div}]')
-    
+    print(f'\n[{div}]\n\tGreetings \t{title} {fc} {surName} \n\n[{div}]')
+    security(chances)
     
     
 
-def tryagain():
-    t=input('Try again [Yes] or [No]:\t ')
-    if t in accept:
-        option()
-    elif t in reject:
-        outro()
-            
-def option():
-    global opt
-    opt=input('Select an option:\n\tWithdraw money press [1]\n\tDeposit cash press [2]\n\tTo check balance [3]\n\t>_ ')
-    atm(opt)
-    return opt
-    
-    
+
+#############
+#############
+
 def pintrial(chances):
     if chances>0:
         security(chances)
@@ -221,32 +177,54 @@ def pintrial(chances):
     pass
 
 
-
 def security(chances):
     print(f"Pin chances {chances}")
     pin=input(f'Please enter your pin:\n\t>_\t')
     if pin == dbpin:
-        print(f"Pin accepted!")
+        print(f"{div}\n\tPin accepted!\n{div}")
+        try:
+            print(f"\aACCOUNT TYPE:  >_\t{accountType}")
+        except NameError:
+            print('ACCOUNT UNKOWN')
+        
+        print(f"ACCOUNT HOLDER:>_\t{title} {firstName} {surName}\nACCOUNT NUMBER:>_\t{account} ")
         option()
-        #atm(opt)
     else:
-        print("Wrong pin!")
+        print(f"{div}\n\tWrong pin!\n{div}")
         chances-=1
         pintrial(chances)
         
         
 
+#getting balance from dbBal
+def getBal(balDict):
+    global bal
+    for i in balDict:
+        if account==i:
+            bal=balDict[i]
+    bal=float(bal)
+    return bal
+    
+
+def outro():
+    eso=time.localtime()
+    tmOut=time.strftime("%H:%M:%S",eso)
+    print(f"\n\n[{div2}]\n\tThank you {title} {surName} for doing business with us\n\n\t\t\tGoodbye!\n\t\tLog out time:{tmOut}\n[{div}]")
+    time.sleep(1)
+    return exit()
+
 def again():
     agn=input("Do you want to transact again? [y] or [n]:\t")
     if agn in accept:
         option()
-    if agn in reject:
+    elif agn in reject:
         outro()
         
         
 
-def withdraw(*args):
-    global bal
+#########features client
+def withdraw(bal):
+    #global bal
     if bal <= float(10.00):
         print(f"Insufficent balance, you have ${bal} remaining")
     elif bal >float(10.00):
@@ -262,6 +240,41 @@ def withdraw(*args):
             again()
     
     
+#returning balance
+def retBal(balDict, bal):
+    cont1=[]
+    cont2=[]
+    balax = bal
+    try:
+        for i in balDict:
+            if account==i:
+                #print(i)
+                balDict[account]=str(balax)
+    except RuntimeError:
+        print('Working')
+        #print(balDict)
+        
+    #print(balDict)
+    for i in balDict.items():
+        f=list(i)
+        #print(f)
+        a=f[0]
+        b=f[1]
+        #print(a)
+        #print(b)
+        cont1.append(a)
+        cont2.append(b)
+        #print(cont1)
+        #print(cont2)
+        w='_'.join(cont1)
+        x='_'.join(cont2)
+        #print(w)
+        #print(x)
+        
+        with open('dbal2.txt', 'w+') as file:
+            file.write(f"{w}\n{x}")
+            
+        
 
 
 def deposit(*args):
@@ -300,16 +313,22 @@ def balance(*args):
         again()
     
 
-
-def outro():
-    print(f"Thank you {title} {surName} for doing business with us\nGoodbye!\n[{div}]")
-    time.sleep(1)
-    return exit()
-
+#########
+def tryagain():
+    t=input('Try again [Yes] or [No]:\t ')
+    if t in accept:
+        option()
+    elif t in reject:
+        outro()
+    else:
+        time.sleep(1)
+        print('\n\tOops! unrecognized input\n')
+        time.sleep(1)
 
 
 def atm(opt):
-    print('my option:',opt)
+    getBal(balDict)
+    print(f'{div}\n\tmy option:\t{opt}\n{div}')
     
     if opt=='1':
         withdraw(bal)
@@ -321,8 +340,24 @@ def atm(opt):
         print("invalid input!")
         tryagain()
         
-greet()
-security(chances)
 
+def option():
+    global opt
+    opt=input('Select an option:\n\tWithdraw money press [1]\n\tDeposit cash press [2]\n\tTo check balance [3]\n\t>_ ')
+    atm(opt)
+    return opt
+    
+    
 
+'''
+
+def Query():
+    print(f"Account Holders information:\nFullname:\t{title} {firstName} {surName}")
+    
+    
+###################
+
+'''
+
+Welcome()
 

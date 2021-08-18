@@ -1,3 +1,3 @@
-2021-0001-100-10_2021-0002-100-10
+20210000001_20210000002
 reg.I.D,fName,sName,email-address,cell-number,occupation,nat-I.D.-or-Passport-Num,D.O.B,account-type,Reg-Date,title,sex
 A100-000-aa,Mandla Collymore,Mangena,mankcolly321@gmail.com,0784437XX,Programmer,59-XXXXXXC0X,01-01-1900,Bronze,02-09-2020,Mr,Male_B100-000-ab,Passmore,Mudhonhi,mdp@gmail.com,0777777777,Mathematician,78-XXXXXXB0Y,02-02-1009,Silver,03-09-2021,Mr,Male
